@@ -1,0 +1,11 @@
+spec Test
+env int a1;
+env int a2;
+sys float a3;
+env boolean b1;
+sys boolean b2;
+asm ini !(b1 & b2);
+
+asm alw a1<a2 & b1-> next(a2+5)=a1*a3;
+gar alwEv a1>a2 &!(b2)-> next(a3=1.2) & next(b2)=false;
+asm alw a1<a2 -> next(a2)=a1;

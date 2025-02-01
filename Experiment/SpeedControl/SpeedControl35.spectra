@@ -1,0 +1,17 @@
+spec SpeedControl35
+
+env Int(0..35)speed;
+sys {mode0, mode1, mode2, mode5} mode;
+sys {speedup, slowdown, keepon} speedC;
+env {open, close}ctl;
+
+gar ini mode=mode0;
+asm ini ctl=open;
+asm ini speed=0;
+gar ini speedC=speedup;
+
+gar alw mode=mode0 & ctl=open -> next(mode=mode1) & next(speedC=speedup);
+gar alw mode=mode1 & !(speed>=25) &ctl=open -> next(speedC=speedup);
+gar alw mode=mode1 & speed>=25 &ctl=open -> next(mode=mode2) & next(speedC=keepon);
+gar alw mode=mode2 & ctl=open -> next(speedC=keepon);
+gar alw mode=mode2 & ctl=close -> next(mode=mode5) & next(speedC=slowdown);

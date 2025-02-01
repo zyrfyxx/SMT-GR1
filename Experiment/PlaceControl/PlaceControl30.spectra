@@ -1,0 +1,13 @@
+spec PlaceControl300
+
+env Int(0..30)robotX;
+env Int(0..30)robotY;
+sys {Up,Down,Left,Right,Stay} move;
+
+asm ini robotX=1;
+asm ini robotY=1;
+
+gar alw robotX=0 -> next(move != Left);
+gar alw robotX=30 -> next(move != Right);
+gar alw robotY=0 -> next(move != Down);
+gar alw robotY=30 -> next(move != Up);

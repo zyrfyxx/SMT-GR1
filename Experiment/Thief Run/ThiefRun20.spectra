@@ -1,0 +1,26 @@
+spec ThiefRun20
+
+env Int(0..20)policeX;
+env Int(0..20)policeY;
+env Int(0..20)thiefX;
+env Int(0..20)thiefY;
+env boolean foundPolice;
+sys {up, down, left, right, stay}move;
+sys boolean steal;
+
+asm ini !foundPolice;
+gar ini steal;
+
+
+asm alw policeX>=0 & policeX<=20;
+asm alw policeY>=0 & policeY<=20;
+
+
+asm alw thiefX>=0 & thiefX<=20;
+asm alw thiefY>=0 & thiefY<=20;
+
+gar alw !foundPolice -> steal & move=stay;
+gar alw foundPolice & (thiefX > policeX) -> (move != left) & !steal;
+gar alw foundPolice & (thiefX < policeX) -> (move != right) & !steal;
+gar alw foundPolice & (thiefY < policeY) -> (move != up) & !steal;
+gar alw foundPolice & (thiefY > policeY) -> (move != down) & !steal;

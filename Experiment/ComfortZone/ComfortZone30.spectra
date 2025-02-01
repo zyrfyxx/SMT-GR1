@@ -1,0 +1,38 @@
+spec ComfortZone30
+
+env Int(1..30) desired_temp_min;
+env Int(1..30) desired_temp_max;
+env Int(1..30) ext_temperature;
+env Int(1..30) current_temp;
+
+sys boolean ac_on;
+
+
+gar ini ac_on = false;
+
+
+
+
+
+gar pRespondsToS(ext_temperature < desired_temp_min - 1, ac_on);
+gar pRespondsToS(ext_temperature > desired_temp_max + 1, !ac_on);
+gar pRespondsToS(current_temp < desired_temp_min - 2, ac_on);
+gar pRespondsToS(current_temp > desired_temp_max + 2, !ac_on);
+
+
+  
+pattern pRespondsToS(p, s) {
+  var { S0, S1} state;
+
+  -- initial assignments: initial state
+  state=S0;
+
+  -- safety this and next state
+  G ((state=S0 & ((!p) | (p & s)) & next(state=S0)) |
+  (state=S0 & (p & !s) & next(state=S1)) |
+  (state=S1 & (s) & next(state=S0)) |
+  (state=S1 & (!s) & next(state=S1)));
+
+  -- equivalence of satisfaction
+  GF (state=S0);
+}

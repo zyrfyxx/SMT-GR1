@@ -1,0 +1,34 @@
+spec ThiefRun5
+
+
+
+
+
+env Int(0..5)policeX;
+env Int(0..5)policeY;
+env Int(0..5)thiefX;
+env Int(0..5)thiefY;
+env boolean foundPolice;
+sys {up, down, left, right, stay}move;
+sys boolean steal;
+
+asm ini !foundPolice;
+gar ini steal;
+
+
+asm alw policeX>=0 & policeX<=5;
+asm alw policeY>=0 & policeY<=5;
+asm ini policeX=5;
+asm ini policeY=5;
+
+
+asm alw thiefX>=0 & thiefX<=5;
+asm alw thiefY>=0 & thiefY<=5;
+asm ini thiefX=0;
+asm ini thiefY=0;
+
+gar alw !foundPolice -> steal & move=stay;
+gar alw foundPolice & (thiefX > policeX) -> (move != left) & !steal;
+gar alw foundPolice & (thiefX < policeX) -> (move != right) & !steal;
+gar alw foundPolice & (thiefY < policeY) -> (move != up) & !steal;
+gar alw foundPolice & (thiefY > policeY) -> (move != down) & !steal;
