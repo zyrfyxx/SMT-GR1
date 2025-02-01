@@ -1,0 +1,46 @@
+
+spec MoveTrackAndCarry			
+	
+env Int(0..2)obstacleX;
+env Int(0..2)obstacleY;
+env Int(0..2)robotX;
+env Int(0..2)robotY;
+sys {up, down, left, right, stay}move;
+sys {catch, release}action;
+sys {search, carry} mode;
+
+asm ini obstacleX=2;
+asm ini obstacleY=2;
+asm alw obstacleX>=0 & obstacleX<=2;
+asm alw obstacleY>=0 & obstacleY<=2;
+
+asm ini robotX=1;
+asm ini robotY=1;
+
+gar ini action=release;
+gar ini mode=search;
+
+
+gar alw (robotX < obstacleX) & (robotY < obstacleY) & (mode=search) -> (next(move=right) | next(move=up) )& next(mode=search) & next(action=release);
+gar alw (robotX < obstacleX) & (robotY > obstacleY) & (mode=search) -> (next(move=right) | next(move=down) )& next(mode=search) & next(action=release);
+gar alw (robotX > obstacleX) & (robotY < obstacleY) & (mode=search) -> (next(move=left) | next(move=up) )& next(mode=search) & next(action=release);
+gar alw (robotX > obstacleX) & (robotY > obstacleY) & (mode=search) -> (next(move=left) | next(move=down) )& next(mode=search) & next(action=release);
+
+gar alw (robotX < obstacleX) & (robotY = obstacleY) & (mode=search) & (action=release) -> next(move=right) & next(mode=search) & next(action=release);
+gar alw (robotX = obstacleX) & (robotY > obstacleY) & (mode=search) & (action=release) -> next(move=down) & next(mode=search) & next(action=release);
+gar alw (robotX > obstacleX) & (robotY = obstacleY) & (mode=search) & (action=release) -> next(move=left) & next(mode=search) & next(action=release);
+gar alw (robotX = obstacleX) & (robotY < obstacleY) & (mode=search) & (action=release) -> next(move=up) & next(mode=search) & next(action=release);
+
+gar alw (robotX = obstacleX) & (robotY = obstacleY) & (mode=search) & (action=release) -> next(move=stay) & next(action=catch) & next(mode=carry);
+
+
+gar alw action=catch & mode=carry & (robotX>0 & robotY>0) -> (next(move=left) | next(move=down)) & next(action=catch) & next(mode=carry); 
+
+gar alw action=catch & mode=carry & (robotX>0 & robotY=0) -> next(move=left)  & next(action=catch) & next(mode=carry); 
+
+gar alw action=catch & mode=carry & (robotX=0 & robotY>0) -> next(move=down) & next(action=catch) & next(mode=carry); 
+
+
+
+gar alw action=catch & mode=carry & robotX=0 & robotY=0 -> next(action=release) | next(mode=search);
+

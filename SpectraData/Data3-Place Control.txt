@@ -1,0 +1,13 @@
+spec PlaceControlModule_v1			
+			
+env Int(0..3)robotX;
+env Int(0..3)robotY;
+sys {Up,Down,Left,Right,Stay} move;
+
+asm ini robotX=1;
+asm ini robotY=1;
+
+gar alw robotX=0 -> next(move != Left);
+gar alw robotX=3 -> next(move != Right);
+gar alw robotY=0 -> next(move != Down);
+gar alw robotY=3 -> next(move != Up);
