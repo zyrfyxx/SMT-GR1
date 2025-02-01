@@ -1,0 +1,6 @@
+INI -> S0 {boolVar_1782545702:false, boolVar_1429656909:true} / {boolVar_3177084:false, boolVar_3177085:false};
+INI -> S1 {boolVar_1782545702:true, boolVar_1429656909:false} / {boolVar_3177084:false, boolVar_3177085:false};
+S0 -> S0 {boolVar_1782545702:false, boolVar_1429656909:true} / {boolVar_3177084:true, boolVar_3177085:false};
+S0 -> S1 {boolVar_1782545702:true, boolVar_1429656909:false} / {boolVar_3177084:true, boolVar_3177085:false};
+S1 -> S0 {boolVar_1782545702:false, boolVar_1429656909:true} / {boolVar_3177084:false, boolVar_3177085:true};
+S1 -> S1 {boolVar_1782545702:true, boolVar_1429656909:false} / {boolVar_3177084:false, boolVar_3177085:true};
